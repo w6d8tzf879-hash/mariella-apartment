@@ -593,7 +593,7 @@ function buildNav(){
   ).join("");
 }
 
-function setLang(l){ lang=l; render(); }
+function setLang(l){ lang=l; render(); setSection(activeSection); }
 function setSection(s){ activeSection=s; document.querySelectorAll(".section").forEach(el=>el.classList.remove("visible")); const el=document.getElementById("sec-"+s); if(el)el.classList.add("visible"); buildNav(); buildLangRow(); }
 
 function copyPwd(){
