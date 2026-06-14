@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mariella Apartment · Monopoli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0f4f7; color: #1e293b; min-height: 100vh; }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(160deg, #0d4a63 0%, #0a3347 55%, #071e2e 100%);
+      color: white;
+      text-align: center;
+      padding: 40px 20px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .header-eyebrow {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .header-sub {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+    .header-address {
+      font-size: 12px;
+      opacity: 0.55;
+      margin-bottom: 22px;
+      text-decoration: none;
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      display: inline-block;
+      padding-bottom: 2px;
+    }
+    .header-address:hover { opacity: 0.85; }
+    .lang-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .lang-btn {
+      padding: 4px 13px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .lang-btn.active { background: rgba(255,255,255,0.2); font-weight: 700; border-color: rgba(255,255,255,0.6); }
+
+    /* NAV */
+    .nav-bar {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 8px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .nav-btn {
+      display: inline-block;
+      padding: 13px 12px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      color: #64748b;
+      border-bottom: 2.5px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-btn.active { color: #0d4a63; border-bottom-color: #0d4a63; }
+
+    /* CONTENT */
+    .content { max-width: 640px; margin: 0 auto; padding: 20px 14px 48px; }
+    .section { display: none; }
+    .section.visible { display: block; }
+
+    /* CARDS */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0d4a63;
+      margin-bottom: 14px;
+    }
+
+    /* WIFI */
+    .wifi-label { font-size: 11px; color: #94a3b8; margin-bottom: 3px; letter-spacing: 0.5px; }
+    .wifi-val {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #334155;
+      margin-bottom: 10px;
+    }
+    .pwd-row { display: flex; align-items: flex-end; gap: 8px; }
+    .pwd-box {
+      flex: 1;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-family: monospace;
+      font-size: 17px;
+      font-weight: 700;
+      color: #15803d;
+      letter-spacing: 1px;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      background: #0d4a63;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+    .copy-btn.done { background: #15803d; }
+    .wifi-tip { margin-top: 9px; font-size: 12px; color: #64748b; }
+
+    /* CONTACT */
+    .contact-row { display: flex; align-items: center; gap: 14px; }
+    .contact-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, #0d4a63, #071e2e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .contact-name { font-weight: 700; font-size: 15px; color: #1e293b; }
+    .contact-phone { font-size: 13px; color: #64748b; margin-top: 1px; }
+    .wa-btn {
+      background: #25d366; color: white; border-radius: 10px;
+      padding: 8px 15px; font-size: 13px; font-weight: 700;
+      text-decoration: none; flex-shrink: 0; margin-left: auto;
+    }
+    .contact-note {
+      margin-top: 12px; font-size: 13px; color: #64748b;
+      background: #f8fafc; border-radius: 8px; padding: 9px 12px;
+    }
+
+    /* RULES */
+    .section-h { font-size: 16px; font-weight: 700; color: #0d4a63; margin-bottom: 12px; }
+    .rule-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .rule-row:last-child { border-bottom: none; }
+    .rule-icon { font-size: 20px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+    .rule-text { font-size: 14px; color: #334155; line-height: 1.5; }
+
+    /* TRASH */
+    .trash-intro { font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 14px; }
+    .trash-table { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 10px; }
+    .trash-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #f8fafc;
+    }
+    .trash-row:last-child { border-bottom: none; }
+    .trash-row:nth-child(even) { background: #fafbfc; }
+    .dots { display: flex; gap: 4px; flex-shrink: 0; }
+    .dot { width: 13px; height: 13px; border-radius: 50%; }
+    .trash-day { font-weight: 700; color: #0d4a63; font-size: 13px; min-width: 108px; }
+    .trash-type { font-size: 13px; color: #475569; }
+    .trash-note {
+      background: #eff9fc; border: 1px solid #bae6fd;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 13px; color: #0369a1;
+    }
+
+    /* APPLIANCES */
+    .app-card { display: flex; gap: 13px; align-items: flex-start; }
+    .app-icon { font-size: 24px; flex-shrink: 0; }
+    .app-name { font-weight: 700; font-size: 15px; color: #1e293b; margin-bottom: 4px; }
+    .app-desc { font-size: 13px; color: #64748b; line-height: 1.55; }
+    .video-wrap { margin-top: 14px; border-radius: 12px; overflow: hidden; background: #000; }
+    .video-wrap iframe { width: 100%; height: 340px; display: block; border: none; }
+
+    /* PLACES */
+    .place-card {
+      background: white; border-radius: 14px;
+      padding: 13px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 10px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .place-info { flex: 1; }
+    .place-name { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 3px; }
+    .place-desc { color: #64748b; font-size: 13px; line-height: 1.5; }
+    .place-hours { color: #94a3b8; font-size: 12px; margin-top: 3px; }
+    .map-btn {
+      flex-shrink: 0;
+      background: #0d4a63; color: white;
+      border-radius: 8px; padding: 6px 11px;
+      font-size: 12px; font-weight: 600;
+      text-decoration: none; align-self: flex-start;
+      white-space: nowrap; font-family: 'Inter', sans-serif;
+    }
+    .map-btn:hover { background: #0a3347; }
+
+    /* FOOTER */
+    .footer { text-align: center; padding: 0 0 28px; color: #94a3b8; font-size: 11px; }
+    .footer span { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: #64748b; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Monopoli · Puglia · Italy</div>
+  <h1>Mariella Apartment</h1>
+  <p class="header-sub" id="hdr-sub"></p>
+  <a class="header-address" href="https://www.google.com/maps/search/?api=1&query=Via+Nazario+Sauro+70043+Monopoli+BA+Italy" target="_blank">
+    📍 Via Nazario Sauro, 70043 Monopoli BA
+  </a>
+  <div class="lang-row" id="lang-row"></div>
+</div>
+
+<div class="nav-bar" id="nav-bar"></div>
+
+<div class="content">
+
+  <!-- HOME -->
+  <div class="section" id="sec-home">
+    <div class="card">
+      <div class="card-title" id="wifi-title"></div>
+      <div class="wifi-label">2.4 GHz</div>
+      <div class="wifi-val">netgear56_ext</div>
+      <div class="wifi-label">5 GHz</div>
+      <div class="wifi-val" id="wifi-5g"></div>
+      <div class="pwd-row">
+        <div style="flex:1">
+          <div class="wifi-label">Password</div>
+          <div class="pwd-box">curlyink868</div>
+        </div>
+        <button class="copy-btn" id="copy-btn" onclick="copyPwd()"></button>
+      </div>
+      <div class="wifi-tip" id="wifi-tip"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="contact-title"></div>
+      <div class="contact-row">
+        <div class="contact-avatar">👨‍💼</div>
+        <div>
+          <div class="contact-name" id="contact-name"></div>
+          <div class="contact-phone">+39 349 893 9690</div>
+        </div>
+        <a class="wa-btn" href="https://wa.me/393498939690" target="_blank">WhatsApp</a>
+      </div>
+      <div class="contact-note" id="contact-note"></div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="section" id="sec-rules">
+    <div class="card" id="rules-card">
+      <div class="section-h" id="rules-title"></div>
+      <div id="rules-list"></div>
+    </div>
+    <div class="section-h" id="trash-title" style="margin-top:6px"></div>
+    <p class="trash-intro" id="trash-intro"></p>
+    <div class="trash-table" id="trash-table"></div>
+    <div class="trash-note" id="trash-note"></div>
+  </div>
+
+  <!-- APPLIANCES -->
+  <div class="section" id="sec-appliances">
+    <div class="section-h" id="app-title"></div>
+    <div id="app-list"></div>
+  </div>
+
+  <!-- PLACES sections -->
+  <div class="section" id="sec-supermarkets"><div class="section-h" id="ph-supermarkets"></div><div id="pl-supermarkets"></div></div>
+  <div class="section" id="sec-gelato"><div class="section-h" id="ph-gelato"></div><div id="pl-gelato"></div></div>
+  <div class="section" id="sec-food"><div class="section-h" id="ph-food"></div><div id="pl-food"></div></div>
+  <div class="section" id="sec-beaches"><div class="section-h" id="ph-beaches"></div><div id="pl-beaches"></div></div>
+  <div class="section" id="sec-transport"><div class="section-h" id="ph-transport"></div><div id="pl-transport"></div></div>
+  <div class="section" id="sec-useful"><div class="section-h" id="ph-useful"></div><div id="pl-useful"></div></div>
+
+</div>
+
+<div class="footer"><span>Mariella Apartment</span> &nbsp;·&nbsp; Via Nazario Sauro &nbsp;·&nbsp; Monopoli &nbsp;·&nbsp; Puglia 🌊</div>
+
+<script>
+const LANGS = [
+  { code:"en", label:"🇬🇧 English" },
+  { code:"it", label:"🇮🇹 Italiano" },
+  { code:"de", label:"🇩🇪 Deutsch" },
+  { code:"fr", label:"🇫🇷 Français" },
+  { code:"es", label:"🇪🇸 Español" },
+  { code:"ru", label:"🇷🇺 Русский" },
+];
+
+const DATA = {
+  welcome: {
+    en:"Your home in the heart of Monopoli, Puglia.",
+    it:"La vostra casa nel cuore di Monopoli, Puglia.",
+    de:"Ihr Zuhause im Herzen von Monopoli, Apulien.",
+    fr:"Votre logement au cœur de Monopoli, Pouilles.",
+    es:"Su hogar en el corazón de Monopoli, Puglia.",
+    ru:"Ваш дом в самом сердце Монополи, Апулия.",
+  },
+  wifi: {
+    en:{ title:"📶 Wi-Fi", net5:"netgear56-5G_ext (faster)", tip:"The 5G network is faster for streaming. Both use the same password." },
+    it:{ title:"📶 Wi-Fi", net5:"netgear56-5G_ext (più veloce)", tip:"La rete 5G è più veloce per lo streaming. Entrambe usano la stessa password." },
+    de:{ title:"📶 WLAN", net5:"netgear56-5G_ext (schneller)", tip:"Das 5G-Netzwerk ist schneller für Streaming. Beide nutzen dasselbe Passwort." },
+    fr:{ title:"📶 Wi-Fi", net5:"netgear56-5G_ext (plus rapide)", tip:"Le réseau 5G est plus rapide. Les deux utilisent le même mot de passe." },
+    es:{ title:"📶 Wi-Fi", net5:"netgear56-5G_ext (más rápida)", tip:"La red 5G es más rápida. Ambas usan la misma contraseña." },
+    ru:{ title:"📶 Wi-Fi", net5:"netgear56-5G_ext (быстрее)", tip:"Сеть 5G быстрее для стриминга. Обе сети используют один пароль." },
+  },
+  contact: {
+    en:{ title:"📞 Contact", name:"Francesco", note:"Available by WhatsApp or call. We aim to respond within 1 hour." },
+    it:{ title:"📞 Contatti", name:"Francesco", note:"Disponibile su WhatsApp o telefono. Rispondiamo entro un'ora." },
+    de:{ title:"📞 Kontakt", name:"Francesco", note:"Erreichbar per WhatsApp oder Anruf. Wir antworten innerhalb einer Stunde." },
+    fr:{ title:"📞 Contact", name:"Francesco", note:"Disponible par WhatsApp ou téléphone. Nous répondons dans l'heure." },
+    es:{ title:"📞 Contacto", name:"Francesco", note:"Disponible por WhatsApp o teléfono. Respondemos en menos de una hora." },
+    ru:{ title:"📞 Контакт", name:"Франческо", note:"Доступен в WhatsApp или по телефону. Отвечаем в течение часа." },
+  },
+  rules: {
+    en:{ title:"📋 House Rules", items:[
+      {icon:"🕛",text:"Check-in: from 12:00"},{icon:"🕙",text:"Check-out: by 10:00"},
+      {icon:"🔇",text:"Quiet hours: 22:00 – 08:00. Please respect the neighbours."},
+      {icon:"🚭",text:"No smoking inside the apartment."},
+      {icon:"🎉",text:"Parties and events are strictly not permitted."},
+      {icon:"🔑",text:"Please close all doors and windows when leaving."},
+    ]},
+    it:{ title:"📋 Regole della Casa", items:[
+      {icon:"🕛",text:"Check-in: a partire dalle 12:00"},{icon:"🕙",text:"Check-out: entro le 10:00"},
+      {icon:"🔇",text:"Silenzio notturno: 22:00 – 08:00. Rispettare i vicini."},
+      {icon:"🚭",text:"Vietato fumare all'interno dell'appartamento."},
+      {icon:"🎉",text:"Feste ed eventi sono severamente vietati."},
+      {icon:"🔑",text:"Chiudere porte e finestre prima di uscire."},
+    ]},
+    de:{ title:"📋 Hausregeln", items:[
+      {icon:"🕛",text:"Check-in: ab 12:00 Uhr"},{icon:"🕙",text:"Check-out: bis 10:00 Uhr"},
+      {icon:"🔇",text:"Nachtruhe: 22:00 – 08:00 Uhr. Bitte Rücksicht auf Nachbarn nehmen."},
+      {icon:"🚭",text:"Rauchen in der Wohnung verboten."},
+      {icon:"🎉",text:"Partys und Veranstaltungen sind strikt untersagt."},
+      {icon:"🔑",text:"Türen und Fenster beim Verlassen schließen."},
+    ]},
+    fr:{ title:"📋 Règles de la Maison", items:[
+      {icon:"🕛",text:"Arrivée : à partir de 12h00"},{icon:"🕙",text:"Départ : avant 10h00"},
+      {icon:"🔇",text:"Calme nocturne : 22h00 – 08h00. Respectez les voisins."},
+      {icon:"🚭",text:"Interdiction de fumer dans l'appartement."},
+      {icon:"🎉",text:"Les fêtes et événements sont strictement interdits."},
+      {icon:"🔑",text:"Fermer portes et fenêtres en partant."},
+    ]},
+    es:{ title:"📋 Normas de la Casa", items:[
+      {icon:"🕛",text:"Entrada: a partir de las 12:00"},{icon:"🕙",text:"Salida: antes de las 10:00"},
+      {icon:"🔇",text:"Silencio nocturno: 22:00 – 08:00. Respetar a los vecinos."},
+      {icon:"🚭",text:"Prohibido fumar dentro del apartamento."},
+      {icon:"🎉",text:"Las fiestas y eventos están estrictamente prohibidos."},
+      {icon:"🔑",text:"Cerrar puertas y ventanas al salir."},
+    ]},
+    ru:{ title:"📋 Правила дома", items:[
+      {icon:"🕛",text:"Заезд: с 12:00"},{icon:"🕙",text:"Выезд: до 10:00"},
+      {icon:"🔇",text:"Тихие часы: 22:00 – 08:00. Просьба уважать соседей."},
+      {icon:"🚭",text:"Курение в квартире запрещено."},
+      {icon:"🎉",text:"Вечеринки и мероприятия строго запрещены."},
+      {icon:"🔑",text:"Закрывайте все двери и окна при выходе."},
+    ]},
+  },
+  trash: {
+    en:{ title:"♻️ Waste Sorting — Mandatory", intro:"Separate waste collection is compulsory in Monopoli. Sort correctly and put bins out the evening before collection day.", note:"💡 Download the Navita app for exact schedules and reminders.",
+      schedule:[
+        {day:"Monday",    dots:["#8B4513"],            type:"Organic waste (brown bin)"},
+        {day:"Tuesday",   dots:["#1d4ed8"],            type:"Paper & cardboard (blue bin)"},
+        {day:"Wednesday", dots:["#8B4513","#16a34a"],  type:"Organic waste (brown) + Glass (green bin)"},
+        {day:"Thursday",  dots:["#eab308"],            type:"Plastic & metals (yellow bin)"},
+        {day:"Friday",    dots:["#8B4513"],            type:"Organic waste (brown bin)"},
+        {day:"Saturday",  dots:["#6b7280"],            type:"Non-recyclable waste (grey bin)"},
+        {day:"Sunday",    dots:["#8B4513"],            type:"Organic waste (brown bin)"},
+      ]},
+    it:{ title:"♻️ Raccolta Differenziata — Obbligatoria", intro:"La raccolta differenziata è obbligatoria a Monopoli. Differenziare correttamente ed esporre i contenitori la sera prima del ritiro.", note:"💡 Scarica l'app Navita per calendario aggiornato e promemoria.",
+      schedule:[
+        {day:"Lunedì",    dots:["#8B4513"],            type:"Organico (marrone)"},
+        {day:"Martedì",   dots:["#1d4ed8"],            type:"Carta e cartone (blu)"},
+        {day:"Mercoledì", dots:["#8B4513","#16a34a"],  type:"Organico (marrone) + Vetro (verde)"},
+        {day:"Giovedì",   dots:["#eab308"],            type:"Plastica e metalli (giallo)"},
+        {day:"Venerdì",   dots:["#8B4513"],            type:"Organico (marrone)"},
+        {day:"Sabato",    dots:["#6b7280"],            type:"Indifferenziato (grigio)"},
+        {day:"Domenica",  dots:["#8B4513"],            type:"Organico (marrone)"},
+      ]},
+    de:{ title:"♻️ Mülltrennung — Pflicht", intro:"Mülltrennung ist in Monopoli Pflicht. Bitte korrekt trennen und Tonnen am Vorabend des Abholtags herausstellen.", note:"💡 Navita-App herunterladen für aktuellen Kalender und Erinnerungen.",
+      schedule:[
+        {day:"Montag",    dots:["#8B4513"],            type:"Bioabfall (braun)"},
+        {day:"Dienstag",  dots:["#1d4ed8"],            type:"Papier & Pappe (blau)"},
+        {day:"Mittwoch",  dots:["#8B4513","#16a34a"],  type:"Bioabfall (braun) + Glas (grün)"},
+        {day:"Donnerstag",dots:["#eab308"],            type:"Plastik & Metall (gelb)"},
+        {day:"Freitag",   dots:["#8B4513"],            type:"Bioabfall (braun)"},
+        {day:"Samstag",   dots:["#6b7280"],            type:"Restmüll (grau)"},
+        {day:"Sonntag",   dots:["#8B4513"],            type:"Bioabfall (braun)"},
+      ]},
+    fr:{ title:"♻️ Tri des Déchets — Obligatoire", intro:"Le tri sélectif est obligatoire à Monopoli. Triez correctement et sortez les bacs la veille du jour de collecte.", note:"💡 Téléchargez l'appli Navita pour le calendrier et les rappels.",
+      schedule:[
+        {day:"Lundi",     dots:["#8B4513"],            type:"Déchets organiques (marron)"},
+        {day:"Mardi",     dots:["#1d4ed8"],            type:"Papier & carton (bleu)"},
+        {day:"Mercredi",  dots:["#8B4513","#16a34a"],  type:"Organiques (marron) + Verre (vert)"},
+        {day:"Jeudi",     dots:["#eab308"],            type:"Plastique & métaux (jaune)"},
+        {day:"Vendredi",  dots:["#8B4513"],            type:"Déchets organiques (marron)"},
+        {day:"Samedi",    dots:["#6b7280"],            type:"Déchets résiduels (gris)"},
+        {day:"Dimanche",  dots:["#8B4513"],            type:"Déchets organiques (marron)"},
+      ]},
+    es:{ title:"♻️ Separación de Residuos — Obligatorio", intro:"La recogida selectiva es obligatoria en Monopoli. Separe correctamente y saque los contenedores la tarde anterior al día de recogida.", note:"💡 Descarga la app Navita para el calendario actualizado y recordatorios.",
+      schedule:[
+        {day:"Lunes",     dots:["#8B4513"],            type:"Residuos orgánicos (marrón)"},
+        {day:"Martes",    dots:["#1d4ed8"],            type:"Papel y cartón (azul)"},
+        {day:"Miércoles", dots:["#8B4513","#16a34a"],  type:"Orgánico (marrón) + Vidrio (verde)"},
+        {day:"Jueves",    dots:["#eab308"],            type:"Plástico y metales (amarillo)"},
+        {day:"Viernes",   dots:["#8B4513"],            type:"Residuos orgánicos (marrón)"},
+        {day:"Sábado",    dots:["#6b7280"],            type:"Residuos no reciclables (gris)"},
+        {day:"Domingo",   dots:["#8B4513"],            type:"Residuos orgánicos (marrón)"},
+      ]},
+    ru:{ title:"♻️ Сортировка мусора — обязательно", intro:"Раздельный сбор мусора обязателен в Монополи. Сортируйте правильно и выставляйте контейнеры вечером накануне дня вывоза.", note:"💡 Скачайте приложение Navita для актуального расписания и напоминаний.",
+      schedule:[
+        {day:"Понедельник",dots:["#8B4513"],            type:"Органика (коричневый)"},
+        {day:"Вторник",    dots:["#1d4ed8"],            type:"Бумага и картон (синий)"},
+        {day:"Среда",      dots:["#8B4513","#16a34a"],  type:"Органика (коричневый) + Стекло (зелёный)"},
+        {day:"Четверг",    dots:["#eab308"],            type:"Пластик и металл (жёлтый)"},
+        {day:"Пятница",    dots:["#8B4513"],            type:"Органика (коричневый)"},
+        {day:"Суббота",    dots:["#6b7280"],            type:"Несортированный мусор (серый)"},
+        {day:"Воскресенье",dots:["#8B4513"],            type:"Органика (коричневый)"},
+      ]},
+  },
+  appliances: {
+    en:{ title:"⚡ Appliances & Tech", items:[
+      {icon:"🔌",name:"Circuit breaker tripped?",desc:"If the power goes out in part of the apartment, the circuit breaker may have tripped. Watch the video below for step-by-step instructions.",video:true},
+      {icon:"❄️",name:"Air conditioning",desc:"Set to your preferred temperature — we recommend 24–26°C."},
+      {icon:"🍳",name:"Kitchen",desc:"Hob, oven, microwave and kettle are available. Cleaning products are under the sink."},
+    ]},
+    it:{ title:"⚡ Elettrodomestici & Tecnologia", items:[
+      {icon:"🔌",name:"Saltato il salvavita?",desc:"Se la corrente manca in una parte dell'appartamento, potrebbe essere scattato il salvavita. Guarda il video qui sotto per le istruzioni passo passo.",video:true},
+      {icon:"❄️",name:"Aria condizionata",desc:"Impostare la temperatura preferita — consigliamo 24–26°C."},
+      {icon:"🍳",name:"Cucina",desc:"Piano cottura, forno, microonde e bollitore sono disponibili. I detergenti sono sotto il lavello."},
+    ]},
+    de:{ title:"⚡ Geräte & Technik", items:[
+      {icon:"🔌",name:"Sicherung ausgelöst?",desc:"Wenn der Strom in einem Teil der Wohnung ausfällt, hat möglicherweise die Sicherung ausgelöst. Sehen Sie sich das Video unten an.",video:true},
+      {icon:"❄️",name:"Klimaanlage",desc:"Empfohlene Temperatur: 24–26°C."},
+      {icon:"🍳",name:"Küche",desc:"Herd, Backofen, Mikrowelle und Wasserkocher verfügbar. Reinigungsmittel unter der Spüle."},
+    ]},
+    fr:{ title:"⚡ Appareils & Technologie", items:[
+      {icon:"🔌",name:"Disjoncteur déclenché ?",desc:"Si le courant est coupé dans une partie de l'appartement, le disjoncteur a peut-être sauté. Regardez la vidéo ci-dessous.",video:true},
+      {icon:"❄️",name:"Climatisation",desc:"Température recommandée : 24–26°C."},
+      {icon:"🍳",name:"Cuisine",desc:"Plaque de cuisson, four, micro-ondes et bouilloire disponibles. Produits nettoyants sous l'évier."},
+    ]},
+    es:{ title:"⚡ Electrodomésticos & Tecnología", items:[
+      {icon:"🔌",name:"¿Saltó el diferencial?",desc:"Si se va la luz en parte del apartamento, puede que haya saltado el diferencial. Mira el vídeo de abajo.",video:true},
+      {icon:"❄️",name:"Aire acondicionado",desc:"Temperatura recomendada: 24–26°C."},
+      {icon:"🍳",name:"Cocina",desc:"Placa, horno, microondas y hervidor disponibles. Productos de limpieza bajo el fregadero."},
+    ]},
+    ru:{ title:"⚡ Техника и инструкции", items:[
+      {icon:"🔌",name:"Выбило пробки?",desc:"Если в части квартиры пропал свет, возможно, сработал автомат защиты. Посмотрите видео ниже — там показано пошагово, как всё восстановить.",video:true},
+      {icon:"❄️",name:"Кондиционер",desc:"Рекомендуемая температура: 24–26°C."},
+      {icon:"🍳",name:"Кухня",desc:"Плита, духовка, микроволновка и чайник в вашем распоряжении. Чистящие средства под раковиной."},
+    ]},
+  },
+  navLabels: {
+    home:   {en:"Home",   it:"Home",     de:"Start",   fr:"Accueil", es:"Inicio",  ru:"Главная"},
+    rules:  {en:"Rules",  it:"Regole",   de:"Regeln",  fr:"Règles",  es:"Normas",  ru:"Правила"},
+    appliances:{en:"Tech",it:"Tecnica",  de:"Technik", fr:"Équip.",  es:"Técnica", ru:"Техника"},
+    supermarkets:{en:"Supermarkets",it:"Supermercati",de:"Supermärkte",fr:"Supermarchés",es:"Supermercados",ru:"Супермаркеты"},
+    gelato: {en:"Gelato & Sweets",it:"Gelato & Dolci",de:"Gelato & Süßes",fr:"Glaces & Douceurs",es:"Helados & Dulces",ru:"Мороженое"},
+    food:   {en:"Restaurants",it:"Ristoranti",de:"Restaurants",fr:"Restaurants",es:"Restaurantes",ru:"Рестораны"},
+    beaches:{en:"Beaches",it:"Spiagge",  de:"Strände", fr:"Plages",  es:"Playas",  ru:"Пляжи"},
+    transport:{en:"Transport",it:"Trasporti",de:"Transport",fr:"Transport",es:"Transporte",ru:"Транспорт"},
+    useful: {en:"Useful", it:"Utile",    de:"Nützlich",fr:"Utile",   es:"Útil",    ru:"Полезное"},
+  },
+  placesTitles: {
+    supermarkets:{en:"🛒 Supermarkets",it:"🛒 Supermercati",de:"🛒 Supermärkte",fr:"🛒 Supermarchés",es:"🛒 Supermercados",ru:"🛒 Супермаркеты"},
+    gelato:{en:"🍦 Gelato & Sweets",it:"🍦 Gelato & Dolci",de:"🍦 Gelato & Süßes",fr:"🍦 Glaces & Douceurs",es:"🍦 Helados & Dulces",ru:"🍦 Мороженое и сладкое"},
+    food:{en:"🍽️ Restaurants & Cafés",it:"🍽️ Ristoranti & Bar",de:"🍽️ Restaurants & Cafés",fr:"🍽️ Restaurants & Cafés",es:"🍽️ Restaurantes & Cafés",ru:"🍽️ Рестораны и кафе"},
+    beaches:{en:"🏖️ Beaches & Activities",it:"🏖️ Spiagge & Attività",de:"🏖️ Strände & Aktivitäten",fr:"🏖️ Plages & Activités",es:"🏖️ Playas & Actividades",ru:"🏖️ Пляжи и активности"},
+    transport:{en:"🚗 Transport & Parking",it:"🚗 Trasporti & Parcheggi",de:"🚗 Transport & Parken",fr:"🚗 Transport & Parking",es:"🚗 Transporte & Aparcamiento",ru:"🚗 Транспорт и парковка"},
+    useful:{en:"ℹ️ Useful Places",it:"ℹ️ Luoghi Utili",de:"ℹ️ Nützliche Orte",fr:"ℹ️ Lieux Utiles",es:"ℹ️ Lugares Útiles",ru:"ℹ️ Полезные места"},
+  },
+  mapsLabel:{en:"Google Maps 🗺️",it:"Google Maps 🗺️",de:"Google Maps 🗺️",fr:"Google Maps 🗺️",es:"Google Maps 🗺️",ru:"Google Maps 🗺️"},
+  copyLabel:{en:"📋 Copy",it:"📋 Copia",de:"📋 Kopieren",fr:"📋 Copier",es:"📋 Copiar",ru:"📋 Копировать"},
+  copiedLabel:{en:"✓ Copied!",it:"✓ Copiato!",de:"✓ Kopiert!",fr:"✓ Copié!",es:"✓ Copiado!",ru:"✓ Скопировано!"},
+};
+
+const PLACES = {
+  supermarkets:[
+    {name:"Numeri Primi",desc:"Premium deli & supermarket, right in the centre. 4.5⭐",hours:"Mon–Sat 8:00–21:00 · Sun 9:00–13:30"},
+    {name:"Supermercato S.L.K.",desc:"Butcher & deli, good quality & prices. 4.2⭐",hours:"Mon–Fri 8:00–13:30 & 17:00–20:45 · Wed morning only · Sun closed"},
+  ],
+  gelato:[
+    {name:"Bella Blu Gelateria",desc:"Best gelato in town, gluten-free options, open late. 4.5⭐",hours:"Daily 9:00–02:00"},
+    {name:"Gelateria Gasperini dal 1936",desc:"Historic gelateria since 1936, legendary chocolate. 4.4⭐",hours:"Daily 7:00–23:30"},
+    {name:"Cornetteria La Dolce Oasi",desc:"Night pastries & croissants, opens at 19:30. 4.5⭐",hours:"Tue–Sun 19:30–02:00 · Mon closed"},
+    {name:"Francesco Urbano Chocol-Atelier",desc:"Artisan chocolates, gluten-free, truly unique. 4.9⭐"},
+    {name:"Dolceria Almond",desc:"Traditional Apulian sweets & marzipan. 4.9⭐",hours:"Tue–Sun 8:00–12:30"},
+    {name:"Gran Forno Santa Caterina",desc:"Amazing focaccia & sandwiches since 1977. 4.8⭐",hours:"Daily 7:00–14:30 & 16:30–21:00"},
+  ],
+  food:[
+    {name:"Angolocinque Restaurant",desc:"Fine dining, modern Puglian cuisine. Must book! 4.8⭐",hours:"Tue–Sun 12:30–15:00 & 19:30–23:00 · Mon closed"},
+    {name:"Mediterranea Self Service",desc:"Homestyle local food, incredible value. 4.5⭐",hours:"Mon–Sat 10:30–15:00 · Sun closed"},
+    {name:"Bistrot di Cebru",desc:"Affordable self-service, tasty home food. 4.2⭐",hours:"Mon–Fri 8:30–17:00 · Sat 8:30–01:00"},
+    {name:"Gran Caffè del Radar",desc:"Cosy café-restaurant, great lunch specials. 4.4⭐",hours:"Tue–Sun 6:00–16:00 · Mon closed"},
+    {name:"Mikamale Pizza&Co",desc:"Artisan pizza, light digestible dough. 4.9⭐",hours:"Tue–Sun 18:30–00:00 · Mon closed"},
+    {name:"Desirèe",desc:"Great pizza at very affordable prices. 4.7⭐",hours:"Daily 18:30–00:00"},
+    {name:"Il Triangolo dal 1997",desc:"Late-night pizza & panzerotti, open until 2am. 4.4⭐",hours:"Mon, Wed–Sun 18:30–02:00 · Tue closed"},
+    {name:"Pizziamo",desc:"Best value pizza slices in town. 4.3⭐",hours:"Mon, Wed–Sun 19:30–01:00 · Tue closed"},
+    {name:"La Bussola",desc:"Good pizza, family atmosphere. 4.5⭐",hours:"Mon–Tue, Thu–Sun 19:30–00:00 · Wed closed"},
+    {name:"La Tana del Luppolo",desc:"Craft beer bar, amazing charcuterie boards. 4.7⭐"},
+    {name:"Ristorante Pizzeria Cirasella",desc:"Popular local pizzeria. 4.1⭐",hours:"Daily from 17:00"},
+    {name:"Il Tralcio — Enoteca 1986",desc:"Best wine shop in Monopoli, expert guidance. 4.8⭐",hours:"Mon–Sat 9:00–13:00 & 16:30–20:30"},
+  ],
+  beaches:[
+    {name:"Cala Sottile",desc:"Beautiful rocky cove, crystal-clear water — 10 min drive"},
+    {name:"Porto Ghiacciolo",desc:"Scenic beach near the port — 8 min drive"},
+    {name:"Porto Marzano Beach",desc:"Popular sandy beach — 10 min drive"},
+    {name:"Cala Paradiso",desc:"Paradise cove — lives up to the name! 12 min drive"},
+    {name:"Lido Colonia",desc:"Organised lido with sunbeds & facilities"},
+    {name:"Porto Verde / Porto Bianco / Porto Rosso",desc:"Series of beautiful small beaches along the coast"},
+    {name:"3 Sensi Puglia",desc:"E-bikes, paddleboards, snorkelling gear & tours. 4.9⭐",hours:"Daily 8:30–20:00"},
+    {name:"Almarano — Boat Rental",desc:"Boat & catamaran tours from Polignano a Mare. 5.0⭐",hours:"Daily 8:00–21:00"},
+  ],
+  transport:[
+    {name:"Free Parking — Via Nazario Sauro",desc:"Right outside — open 24h, 10–15 min walk to historic centre"},
+    {name:"Area Mercatale",desc:"Central parking area near the market"},
+    {name:"Stazione FS di Monopoli",desc:"Train station — buy tickets on Trenitalia app. 4.2⭐"},
+    {name:"Bus to Alberobello FSE Monopoli",desc:"Stop on Via Vittorio Veneto 137, in front of Bar Bianco Verde. Buy tickets at the bar or on the Trenit! app"},
+    {name:"TAXI Monopoli Autoservizi Amodio",desc:"24h taxi, airport transfers. 4.8⭐ · +39 328 456 6593"},
+    {name:"Let's Rent Monopoli",desc:"E-bikes, scooters & snorkel gear. 4.9⭐",hours:"Daily 9:30–13:00 & 15:00–19:00"},
+  ],
+  useful:[
+    {name:"Farmacia Gentile Monopoli",desc:"Central pharmacy. 4.5⭐",hours:"Mon–Sat 8:15–21:00 · Sun closed"},
+    {name:"Info Point Monopoli",desc:"Tourist info, tours, luggage storage. 4.5⭐",hours:"Daily 10:00–20:00"},
+    {name:"Ufficio Postale Poste Italiane Monopoli",desc:"Post office"},
+    {name:"Piazza Vittorio Emanuele II Monopoli",desc:"Main square — heart of Monopoli, 5 min walk"},
+  ],
+};
+
+const NAV_ORDER = ["home","rules","appliances","supermarkets","gelato","food","beaches","transport","useful"];
+const NAV_EMOJI = {home:"🏠",rules:"📋",appliances:"⚡",supermarkets:"🛒",gelato:"🍦",food:"🍽️",beaches:"🏖️",transport:"🚗",useful:"ℹ️"};
+
+let lang = "en";
+let activeSection = "home";
+
+function mapsLink(name){ return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name+" Monopoli")}`; }
+
+function buildLangRow(){
+  const row = document.getElementById("lang-row");
+  row.innerHTML = LANGS.map(l =>
+    `<button class="lang-btn${l.code===lang?' active':''}" onclick="setLang('${l.code}')">${l.label}</button>`
+  ).join("");
+}
+
+function buildNav(){
+  const bar = document.getElementById("nav-bar");
+  bar.innerHTML = NAV_ORDER.map(id =>
+    `<button class="nav-btn${id===activeSection?' active':''}" onclick="setSection('${id}')">${NAV_EMOJI[id]} ${DATA.navLabels[id][lang]}</button>`
+  ).join("");
+}
+
+function setLang(l){ lang=l; renderHome(); renderRules(); renderAppliances(); renderPlaces(); buildLangRow(); buildNav(); }
+function setSection(s){ activeSection=s; document.querySelectorAll(".section").forEach(el=>el.classList.remove("visible")); const el=document.getElementById("sec-"+s); if(el)el.classList.add("visible"); buildNav(); }
+
+function copyPwd(){
+  navigator.clipboard.writeText("curlyink868").catch(()=>{});
+  const btn=document.getElementById("copy-btn");
+  btn.textContent=DATA.copiedLabel[lang]; btn.classList.add("done");
+  setTimeout(()=>{ btn.textContent=DATA.copyLabel[lang]; btn.classList.remove("done"); },2000);
+}
+
+function renderHome(){
+  const w=DATA.wifi[lang], c=DATA.contact[lang];
+  document.getElementById("hdr-sub").textContent=DATA.welcome[lang];
+  document.getElementById("wifi-title").textContent=w.title;
+  document.getElementById("wifi-5g").textContent=w.net5;
+  document.getElementById("wifi-tip").textContent=w.tip;
+  document.getElementById("copy-btn").textContent=DATA.copyLabel[lang];
+  document.getElementById("contact-title").textContent=c.title;
+  document.getElementById("contact-name").textContent=c.name;
+  document.getElementById("contact-note").textContent=c.note;
+}
+
+function renderRules(){
+  const r=DATA.rules[lang], t=DATA.trash[lang];
+  document.getElementById("rules-title").textContent=r.title;
+  document.getElementById("rules-list").innerHTML=r.items.map((item,i)=>
+    `<div class="rule-row${i===r.items.length-1?' last':''}"><span class="rule-icon">${item.icon}</span><span class="rule-text">${item.text}</span></div>`
+  ).join("");
+  document.getElementById("trash-title").textContent=t.title;
+  document.getElementById("trash-intro").textContent=t.intro;
+  document.getElementById("trash-table").innerHTML=t.schedule.map(row=>
+    `<div class="trash-row"><div class="dots">${row.dots.map(c=>`<div class="dot" style="background:${c};${c==='#6b7280'?'border:1px solid #cbd5e1':''}"></div>`).join("")}</div><span class="trash-day">${row.day}</span><span class="trash-type">${row.type}</span></div>`
+  ).join("");
+  document.getElementById("trash-note").textContent=t.note;
+}
+
+function renderAppliances(){
+  const a=DATA.appliances[lang];
+  document.getElementById("app-title").textContent=a.title;
+  document.getElementById("app-list").innerHTML=a.items.map(item=>`
+    <div class="card">
+      <div class="app-card">
+        <span class="app-icon">${item.icon}</span>
+        <div>
+          <div class="app-name">${item.name}</div>
+          <div class="app-desc">${item.desc}</div>
+          ${item.video?`<div class="video-wrap"><iframe src="https://www.youtube.com/embed/krwIA318bZA" allowfullscreen></iframe></div>`:''}
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+function renderPlaces(){
+  const ml=DATA.mapsLabel[lang];
+  Object.keys(PLACES).forEach(key=>{
+    document.getElementById("ph-"+key).textContent=DATA.placesTitles[key][lang];
+    document.getElementById("pl-"+key).innerHTML=PLACES[key].map(p=>`
+      <div class="place-card">
+        <div class="place-info">
+          <div class="place-name">${p.name}</div>
+          <div class="place-desc">${p.desc}</div>
+          ${p.hours?`<div class="place-hours">🕐 ${p.hours}</div>`:''}
+        </div>
+        <a class="map-btn" href="${mapsLink(p.name)}" target="_blank">${ml}</a>
+      </div>`).join("");
+  });
+}
+
+function render(){
+  buildLangRow();
+  buildNav();
+  renderHome();
+  renderRules();
+  renderAppliances();
+  renderPlaces();
+  document.getElementById("hdr-sub").textContent=DATA.welcome[lang];
+}
+
+render();
+setSection("home");
+</script>
+</body>
+</html>
